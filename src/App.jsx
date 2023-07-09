@@ -1,13 +1,17 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import viteLogo from './assets/vite.svg'
+import Header from './Components/Header/Header'
+import Visualizer from './Components/Visualizer/Visualizer'
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <Header />
+      <Visualizer />
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

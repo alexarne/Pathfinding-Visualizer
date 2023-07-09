@@ -1,0 +1,11 @@
+
+.grid {
+    background-color: var(--gray);
+    color: black;
+}
+
+@media (prefers-color-scheme: light) {
+    .grid {
+        background-color: var(--white);
+    }
+  }
