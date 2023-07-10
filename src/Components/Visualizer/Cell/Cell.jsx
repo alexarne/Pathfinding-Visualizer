@@ -1,4 +1,5 @@
 import React from 'react'
+import './Cell.css'
 
 function Cell({ node }) {
   let nodeClass = "cell"
@@ -14,7 +15,6 @@ function Cell({ node }) {
       onPointerDown={node.pointerDown}
       onPointerUp={node.pointerUp}
       onPointerEnter={node.pointerEnter}>
-        Cell
     </div>
   )
 }

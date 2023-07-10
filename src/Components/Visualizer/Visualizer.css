@@ -1,11 +1,16 @@
 
-.grid {
-    background-color: var(--gray);
-    color: black;
+.visualizer {
+    background-color: var(--background-colour);
+    height: 100vh;
+    padding: .5em;
 }
 
-@media (prefers-color-scheme: light) {
-    .grid {
-        background-color: var(--white);
-    }
-  }
+.grid {
+    margin: auto;
+    width: min-content;
+    border: 0.05em solid var(--grid-colour);
+}
+
+.row {
+    display: flex;
+}
