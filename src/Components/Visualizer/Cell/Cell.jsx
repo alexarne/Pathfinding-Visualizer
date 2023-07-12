@@ -11,10 +11,10 @@ function Cell({ node }) {
   }
 
   return (
-    <div className={nodeClass}
-      onPointerDown={node.mouse.down}
-      onPointerUp={node.mouse.up}
-      onPointerEnter={node.mouse.enter}>
+    <div className={nodeClass} data-x={node.position.x} data-y={node.position.y}
+      onPointerDown={(e) => {e.preventDefault(); node.mouse.down()}}
+      onPointerUp={(e) => {e.preventDefault(); node.mouse.up()}}
+      onPointerEnter={(e) => {e.preventDefault(); node.mouse.enter()}}>
     </div>
   )
 }

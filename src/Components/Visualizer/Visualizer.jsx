@@ -20,10 +20,12 @@ function Visualizer() {
     },
   })
   
+  // Initialize grid
   const [grid, setGrid] = useState([[]])
   useEffect(() => setGrid(createGrid(9, 9)), [])
-
+  
   function createGrid(width, height) {
+    // Mouse actions for cells
     const mouseEnter = (x, y) => {
       if (!state.mouse.isPressed) return
       const newGrid = grid.slice()
@@ -32,14 +34,11 @@ function Visualizer() {
     }
     const mouseUp = (x, y) => {setState(state => {state.mouse.isPressed = false; return state})}
     const mouseDown = (x, y) => {
-      setState(state => {
-        state.mouse.isPressed = true
-        state.mouse.paintMode = !grid[y][x].isWall
-        return state
-      }); 
+      state.mouse.isPressed = true
+      state.mouse.paintMode = !grid[y][x].isWall
       mouseEnter(x, y)
     }
-
+    
     const grid = Array(height).fill(0).map((row, y) => {
       return Array(width).fill(0).map((cell, x) => {
         return {
@@ -58,10 +57,19 @@ function Visualizer() {
         }
       })
     })
+    // Add general listener for touch moves on mobile devices
+    document.addEventListener("touchmove", (e) => {
+      try {
+        const touch = e.changedTouches[0]
+        const elem = document.elementFromPoint(touch.clientX, touch.clientY)
+        if (!elem.classList.contains("cell")) return
+        mouseEnter(elem.dataset.x, elem.dataset.y)
+      } catch (error) {
+        // Do nothing
+      }
+    })
     return grid
   }
-
-
 
   return (
     <>
