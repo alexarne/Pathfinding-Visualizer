@@ -1,8 +1,9 @@
 
 .visualizer {
     background-color: var(--background-colour);
-    height: 100vh;
-    padding: .5em;
+    height: 50vh;
+    display: flex;
+    /* justify-content: center; */
 }
 
 .grid {

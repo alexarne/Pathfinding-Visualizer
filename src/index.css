@@ -30,6 +30,22 @@
   touch-action: none;
 }
 
+/* Visualizer fill remaining space */
+#root {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+}
+#root .header {
+  flex: 0 1 auto;
+}
+#root .visualizer {
+  flex: 1 1 auto;
+}
+#root .controller {
+  flex: 0 1 auto;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

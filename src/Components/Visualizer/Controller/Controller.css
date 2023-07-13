@@ -1,7 +1,7 @@
 
 .controller {
     background-color: var(--primary1-colour);
-    position: absolute;
+    /* position: absolute; */
     width: 100vw;
     bottom: 0;
 }
