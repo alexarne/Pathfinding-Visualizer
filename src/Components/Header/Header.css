@@ -22,7 +22,6 @@
   height: 2em;
   will-change: filter;
   transition: filter 300ms;
-  /* margin-left: 1em; */
 }
 
 .header .logo:hover {
@@ -31,12 +30,6 @@
 
 @media screen and ( max-width: 600px )
 {
-  /* .header > h1 {
-    opacity: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  } */
   .header {
     display: none;
   }

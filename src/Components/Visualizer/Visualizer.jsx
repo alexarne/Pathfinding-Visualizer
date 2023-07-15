@@ -143,6 +143,7 @@ function Visualizer() {
 function getCellDimensions(visualizerRef) {
   const gridHeight = visualizerRef.current.clientHeight
   const gridWidth = visualizerRef.current.clientWidth
+  console.log(gridHeight, gridWidth)
 
   // Hack to get cell size
   const root = document.getElementById("root")

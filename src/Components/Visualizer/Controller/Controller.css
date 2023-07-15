@@ -1,16 +1,14 @@
 
 .controller {
-    background-color: var(--primary1-colour);
-    /* position: absolute; */
-    width: 100vw;
-    bottom: 0;
+  background-color: var(--primary1-colour);
+  width: 100vw;
 }
 
 .controls {
-    padding: .5em;
-    margin: auto;
-    width: min-content;
-    display: flex;
+  padding: .5em;
+  margin: auto;
+  width: min-content;
+  display: flex;
 }
 
 button {
@@ -34,9 +32,9 @@ button:focus-visible {
 }
 
 .separator {
-    background-color: red;
-    width: 0.05em;
-    height: auto;
-    background: linear-gradient(var(--primary1-colour), var(--primary2-colour), var(--primary1-colour));
-    margin: 0 0.5em;
+  background-color: red;
+  width: 0.05em;
+  height: auto;
+  background: linear-gradient(var(--primary1-colour), var(--primary2-colour), var(--primary1-colour));
+  margin: 0 0.5em;
 }
