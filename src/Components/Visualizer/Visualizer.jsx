@@ -25,6 +25,7 @@ function Visualizer() {
       stepDelay: 100,
       algorithm: "Dijkstra",
       paintWalls: true,
+      showBorders: true,
     },
   })
   
@@ -63,11 +64,6 @@ function Visualizer() {
       newGrid[y][x].isWall = state.mouse.paintMode ? true : false
       setGrid(newGrid)
     }
-    const mouseUp = () => {
-      state.mouse.isPressed = false
-      state.mouse.holdingSource = false
-      state.mouse.holdingTarget = false
-    }
     const mouseDown = (x, y) => {
       // Drag source or target
       state.mouse.isPressed = true
@@ -75,6 +71,11 @@ function Visualizer() {
       if (x == state.targetPosition.x && y == state.targetPosition.y) state.mouse.holdingTarget = true
       state.mouse.paintMode = !grid[y][x].isWall
       mouseEnter(x, y)
+    }
+    const mouseUp = () => {
+      state.mouse.isPressed = false
+      state.mouse.holdingSource = false
+      state.mouse.holdingTarget = false
     }
     
     const grid = Array(height).fill(0).map((row, y) => {
@@ -97,7 +98,7 @@ function Visualizer() {
         }
       })
     })
-    document.addEventListener("pointerup", () => mouseUp(0, 0))
+    document.addEventListener("pointerup", mouseUp)
 
     // Add general listener for touch moves on mobile devices
     document.addEventListener("touchmove", (e) => {
@@ -122,14 +123,20 @@ function Visualizer() {
     return grid
   }
 
+  function setBorders(show) {
+    if (state.settings.showBorders == show) return
+    state.settings.showBorders = show
+    setGrid(grid.slice())
+  }
+
   return (
     <>
       <div className="visualizer" ref={visualizerRef}>
-        <div className="grid">
+        <div className={"grid"+(state.settings.showBorders ? " border" : "")}>
           {grid.map((row, rowIndex) => {
             return <div key={rowIndex} className="row">
               {row.map((cell, colIndex) => {
-                return <Cell key={colIndex} node={cell} />
+                return <Cell key={colIndex} node={cell} showBorders={state.settings.showBorders}/>
               })}
             </div> 
           })}
@@ -143,7 +150,6 @@ function Visualizer() {
 function getCellDimensions(visualizerRef) {
   const gridHeight = visualizerRef.current.clientHeight
   const gridWidth = visualizerRef.current.clientWidth
-  console.log(gridHeight, gridWidth)
 
   // Hack to get cell size
   const root = document.getElementById("root")

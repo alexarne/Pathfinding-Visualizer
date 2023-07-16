@@ -8,7 +8,11 @@
 .grid {
     margin: auto;
     width: min-content;
-    border: 0.05em solid var(--grid-colour);
+    border: 0 solid var(--grid-colour);
+}
+
+.grid.border {
+    border-width: 0.05em;
 }
 
 .row {

@@ -1,8 +1,9 @@
 import React from 'react'
 import './Cell.css'
 
-function Cell({ node }) {
+function Cell({ node, showBorders }) {
   let nodeClass = "cell"
+  if (showBorders) nodeClass += " border"
   if (node.isSource) nodeClass += " source"
   if (node.isTarget) nodeClass += " target"
   if (node.isWall) {
