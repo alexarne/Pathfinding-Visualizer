@@ -33,7 +33,7 @@ button:focus-visible {
 
 .separator {
   background-color: red;
-  width: 0.05em;
+  width: 0.056em;
   height: auto;
   background: linear-gradient(var(--primary1-colour), var(--primary2-colour), var(--primary1-colour));
   margin: 0 0.5em;

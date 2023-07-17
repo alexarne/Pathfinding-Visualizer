@@ -5,10 +5,12 @@ function Controller() {
   return (
     <div className='controller'>
       <div className="controls">
-        <button>X</button>
-        <button>X</button>
+        <button>Grass</button>
+        <button>Water</button>
+        <button>Wall</button>
         <div className="separator"></div>
-        <button>X</button>
+        <button>Settings</button>
+        <button>Play</button>
       </div>
     </div>
   )

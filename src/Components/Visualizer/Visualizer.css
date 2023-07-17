@@ -1,7 +1,6 @@
 
 .visualizer {
     background-color: var(--background-colour);
-    height: 50vh;
     display: flex;
 }
 
