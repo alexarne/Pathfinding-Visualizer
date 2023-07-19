@@ -1,13 +1,18 @@
 
 .visualizer {
     background-color: var(--background-colour);
-    display: flex;
+    overflow: hidden;
+    position: relative;
 }
 
 .grid {
-    margin: auto;
+    /* margin: auto; */
     width: min-content;
     border: 0 solid var(--grid-colour);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .grid.border {

@@ -56,7 +56,7 @@ function Visualizer() {
   }
 
   function createGrid() {
-    const [width, height] = getCellDimensions(visualizerRef);
+    let [width, height] = getCellDimensions(visualizerRef);
 
     // Mouse actions for cells
     const mouseEnter = (x, y) => {
@@ -85,6 +85,7 @@ function Visualizer() {
         });
         return;
       }
+
       const newGrid = grid.slice();
       newGrid[y][x].isWall = state.mouse.paintMode ? true : false;
       setGrid(newGrid);
@@ -144,13 +145,27 @@ function Visualizer() {
     });
 
     // Add source and target
+    // Swap to vertical layout on mobile (tall screen)
+    const vertical = width < height && true;
+    if (vertical) [width, height] = [height, width];
     const y = Math.floor((height - 1) / 2);
     const sourceX = Math.floor((width + 1) / 2 / 2);
     state.sourcePosition = { x: sourceX, y: y };
     state.targetPosition = { x: width - 1 - state.sourcePosition.x, y: y };
+
+    if (vertical) {
+      [state.sourcePosition.x, state.sourcePosition.y] = [
+        state.sourcePosition.y,
+        state.sourcePosition.x,
+      ];
+      [state.targetPosition.x, state.targetPosition.y] = [
+        state.targetPosition.y,
+        state.targetPosition.x,
+      ];
+    }
+
     grid[state.sourcePosition.y][state.sourcePosition.x].isSource = true;
     grid[state.targetPosition.y][state.targetPosition.x].isTarget = true;
-
     return grid;
   }
 
@@ -198,7 +213,14 @@ function getCellDimensions(visualizerRef) {
   const cellSize = cell.offsetWidth;
   root.removeChild(cell);
 
-  return [Math.floor(gridWidth / cellSize), Math.floor(gridHeight / cellSize)];
+  let dims = [
+    Math.floor(gridWidth / cellSize),
+    Math.floor(gridHeight / cellSize),
+  ];
+  dims[0] += dims[0] % 2 == 0 ? 1 : 2;
+  dims[1] += dims[1] % 2 == 0 ? 1 : 2;
+
+  return dims;
 }
 
 export default Visualizer;

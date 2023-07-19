@@ -5,11 +5,7 @@
   height: 2em;
   box-sizing: border-box;
   border: 0 solid var(--grid-colour);
-}
-
-.cell.wall {
-  background-color: rgb(12, 53, 71);
-  animation-name: wallAnimation;
+  
   animation-duration: 0.1s;
   animation-timing-function: ease-out;
   animation-delay: 0;
@@ -17,6 +13,21 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
+}
+
+.cell.wall {
+  background-color: rgb(12, 53, 71);
+  animation-name: wallAnimation;
+}
+
+.cell.grass {
+  background-color: rgb(98, 187, 90);
+  animation-name: wallAnimation;
+}
+
+.cell.water {
+  background-color: rgb(119, 180, 230);
+  animation-name: wallAnimation;
 }
 
 .cell.source {
