@@ -177,8 +177,11 @@ function Visualizer() {
 
   return (
     <>
-      <div className="visualizer" ref={visualizerRef}>
-        <div className={"grid" + (state.settings.showBorders ? " border" : "")}>
+      <div
+        className={"visualizer" + (state.settings.showBorders ? " border" : "")}
+        ref={visualizerRef}
+      >
+        <div className={"grid"}>
           {grid.map((row, rowIndex) => {
             return (
               <div key={rowIndex} className="row">

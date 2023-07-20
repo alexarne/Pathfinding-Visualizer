@@ -3,12 +3,17 @@
     background-color: var(--background-colour);
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
+    border: 0 solid var(--grid-colour);
+}
+
+.visualizer.border {
+    border-width: 0.1em;
 }
 
 .grid {
     /* margin: auto; */
     width: min-content;
-    border: 0 solid var(--grid-colour);
     position: absolute;
     left: 50%;
     top: 50%;
@@ -16,7 +21,7 @@
 }
 
 .grid.border {
-    border-width: .00001px;
+
 }
 
 .row {

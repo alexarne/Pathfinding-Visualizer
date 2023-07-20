@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Controller.css";
 
 function Controller({ state, reloadGrid }) {
@@ -6,7 +6,14 @@ function Controller({ state, reloadGrid }) {
     <div className="controller">
       <div className="controls">
         <button>Mode</button>
-        <button>Set</button>
+        <button
+          onClick={() => {
+            state.settings.showBorders = !state.settings.showBorders;
+            reloadGrid();
+          }}
+        >
+          Set
+        </button>
         <div className="separator"></div>
         <button>Play</button>
       </div>
