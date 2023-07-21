@@ -1,11 +1,24 @@
 
+.cell-container {
+  width: 2em;
+  height: 2em;
+
+}
 
 .cell {
   width: 2em;
   height: 2em;
+  position: absolute;
+}
+
+.cell.anti-border {
   box-sizing: border-box;
-  border: 0 solid var(--grid-colour);
-  
+  border: 0 solid var(--background-colour);
+  border-top-width: var(--grid-border-size);
+  border-left-width: var(--grid-border-size);
+}
+
+.cell.animate {
   animation-duration: 0.1s;
   animation-timing-function: ease-out;
   animation-delay: 0;
@@ -39,7 +52,22 @@
 }
 
 .cell.border {
-  border-width: 0.05em;
+  box-sizing: border-box;
+  border: 0 solid var(--grid-colour);
+  border-top-width: var(--grid-border-size);
+  border-left-width: var(--grid-border-size);
+}
+
+.cell-overlay {
+  /* background-color: rgba(255, 0, 0, 0.671); */
+}
+
+.cell-overlay.visited {
+  background-color: rgba(0, 190, 218, 0.5);
+}
+
+.cell-overlay.shortest {
+  
 }
 
 @keyframes wallAnimation {

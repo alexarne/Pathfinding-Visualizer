@@ -17,7 +17,6 @@ function Visualizer() {
     },
     mouse: {
       isPressed: false,
-      paintMode: true,
       holdingSource: false,
       holdingTarget: false,
     },
@@ -26,6 +25,7 @@ function Visualizer() {
       algorithm: "dijkstra",
       paintWalls: true,
       showBorders: true,
+      paintWeight: 3,
     },
   });
 
@@ -35,6 +35,7 @@ function Visualizer() {
       algorithm: "dijkstra",
       paintWalls: true,
       showBorders: true,
+      paintWeight: 3,
     };
     state.settings = settings;
   }
@@ -87,7 +88,13 @@ function Visualizer() {
       }
 
       const newGrid = grid.slice();
-      newGrid[y][x].isWall = state.mouse.paintMode ? true : false;
+      if (
+        !(x == state.sourcePosition.x && y == state.sourcePosition.y) &&
+        !(x == state.targetPosition.x && y == state.targetPosition.y)
+      )
+        newGrid[y][x].isWall = state.settings.paintWalls;
+
+      newGrid[y][x].weight = state.settings.paintWeight;
       setGrid(newGrid);
     };
     const mouseDown = (x, y) => {
@@ -97,7 +104,6 @@ function Visualizer() {
         state.mouse.holdingSource = true;
       if (x == state.targetPosition.x && y == state.targetPosition.y)
         state.mouse.holdingTarget = true;
-      state.mouse.paintMode = !grid[y][x].isWall;
       mouseEnter(x, y);
     };
     const mouseUp = () => {

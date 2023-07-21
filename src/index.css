@@ -19,7 +19,9 @@
   --background-colour: #F2F2F2;
   --primary1-colour: #2C3E50;
   --primary2-colour: #57687c;
+  
   --grid-colour: #b4c7dd;
+  --grid-border-size: 0.0625em;
 
   --button-primary: #e8e8e8;
   --button-hover: #F2F2F2;
