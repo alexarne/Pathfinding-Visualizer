@@ -1,19 +1,31 @@
 import React, { useRef } from "react";
 import "./Cell.css";
 
-function Cell({ node, showBorders }) {
+function Cell({
+  x,
+  y,
+  mouseDown,
+  mouseEnter,
+  isWall,
+  isVisited,
+  isShortestPath,
+  isSource,
+  isTarget,
+  weight,
+  showBorders,
+}) {
   const ref = useRef();
 
   let nodeClass = "cell";
   if (showBorders) nodeClass += " anti-border";
-  if (node.isSource) nodeClass += " source";
-  if (node.isTarget) nodeClass += " target";
-  if (!node.isSource && !node.isTarget) nodeClass += " animate";
+  if (isSource) nodeClass += " source";
+  if (isTarget) nodeClass += " target";
+  if (!isSource && !isTarget) nodeClass += " animate";
 
-  if (node.isWall) {
+  if (isWall) {
     nodeClass += " wall";
   } else {
-    switch (node.weight) {
+    switch (weight) {
       case 3:
         nodeClass += " grass";
         break;
@@ -27,29 +39,25 @@ function Cell({ node, showBorders }) {
 
   let visitedClass = "cell cell-overlay";
   if (showBorders) visitedClass += " border";
-  if (node.isVisited) visitedClass += " visited";
-  if (node.isShortestPath) visitedClass += " shortest";
+  if (isVisited) visitedClass += " visited";
+  if (isShortestPath) visitedClass += " shortest";
 
   return (
     <div
       className="cell-container"
       onPointerDown={(e) => {
         e.preventDefault();
-        node.mouse.down();
+        mouseDown();
       }}
       onPointerEnter={(e) => {
         e.preventDefault();
-        node.mouse.enter();
+        mouseEnter();
       }}
     >
       <div ref={ref} className={nodeClass}></div>
-      <div
-        className={visitedClass}
-        data-x={node.position.x}
-        data-y={node.position.y}
-      ></div>
+      <div className={visitedClass} data-x={x} data-y={y}></div>
     </div>
   );
 }
 
-export default Cell;
+export default React.memo(Cell);

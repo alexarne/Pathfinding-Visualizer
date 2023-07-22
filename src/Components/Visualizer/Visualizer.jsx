@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Controller from "./Controller/Controller";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
@@ -53,65 +53,62 @@ function Visualizer() {
   }, []);
 
   function reloadGrid() {
-    setGrid(grid.slice());
+    setGrid([...grid]);
   }
 
-  function createGrid() {
-    let [width, height] = getCellDimensions(visualizerRef);
+  // Mouse actions for cells
+  const mouseEnter = (x, y) => {
+    if (!state.mouse.isPressed) return;
+    if (state.mouse.holdingSource) {
+      setGrid((grid) => {
+        grid[state.sourcePosition.y][state.sourcePosition.x].isSource = false;
+        grid[y][x].isSource = true;
+        state.sourcePosition = { x: x, y: y };
+        return [...grid];
+      });
+      return;
+    }
+    if (state.mouse.holdingTarget) {
+      setGrid((grid) => {
+        grid[state.targetPosition.y][state.targetPosition.x].isTarget = false;
+        grid[y][x].isTarget = true;
+        state.targetPosition = { x: x, y: y };
+        return [...grid];
+      });
+      return;
+    }
 
-    // Mouse actions for cells
-    const mouseEnter = (x, y) => {
-      if (!state.mouse.isPressed) return;
-      if (state.mouse.holdingSource) {
-        setGrid((grid) => {
-          const newGrid = grid.slice();
-          newGrid[state.sourcePosition.y][
-            state.sourcePosition.x
-          ].isSource = false;
-          newGrid[y][x].isSource = true;
-          state.sourcePosition = { x: x, y: y };
-          return newGrid;
-        });
-        return;
-      }
-      if (state.mouse.holdingTarget) {
-        setGrid((grid) => {
-          const newGrid = grid.slice();
-          newGrid[state.targetPosition.y][
-            state.targetPosition.x
-          ].isTarget = false;
-          newGrid[y][x].isTarget = true;
-          state.targetPosition = { x: x, y: y };
-          return newGrid;
-        });
-        return;
-      }
-
-      const newGrid = grid.slice();
+    setGrid((grid) => {
       if (
         !(x == state.sourcePosition.x && y == state.sourcePosition.y) &&
         !(x == state.targetPosition.x && y == state.targetPosition.y)
       )
-        newGrid[y][x].isWall = state.settings.paintWalls;
+        grid[y][x].isWall = state.settings.paintWalls;
 
-      newGrid[y][x].weight = state.settings.paintWeight;
-      setGrid(newGrid);
-    };
-    const mouseDown = (x, y) => {
-      // Drag source or target
-      state.mouse.isPressed = true;
-      if (x == state.sourcePosition.x && y == state.sourcePosition.y)
-        state.mouse.holdingSource = true;
-      if (x == state.targetPosition.x && y == state.targetPosition.y)
-        state.mouse.holdingTarget = true;
-      mouseEnter(x, y);
-    };
-    const mouseUp = () => {
-      state.mouse.isPressed = false;
-      state.mouse.holdingSource = false;
-      state.mouse.holdingTarget = false;
-    };
+      grid[y][x].weight = state.settings.paintWeight;
+      return [...grid];
+    });
+  };
+  const mouseDown = (x, y) => {
+    // Drag source or target
+    state.mouse.isPressed = true;
+    if (x == state.sourcePosition.x && y == state.sourcePosition.y)
+      state.mouse.holdingSource = true;
+    if (x == state.targetPosition.x && y == state.targetPosition.y)
+      state.mouse.holdingTarget = true;
+    mouseEnter(x, y);
+  };
+  const mouseUp = () => {
+    state.mouse.isPressed = false;
+    state.mouse.holdingSource = false;
+    state.mouse.holdingTarget = false;
+  };
+  const mouseEnterCallback = useCallback((x, y) => {
+    mouseEnter(x, y);
+  }, []);
 
+  function createGrid() {
+    let [width, height] = getCellDimensions(visualizerRef);
     const grid = Array(height)
       .fill(0)
       .map((row, y) => {
@@ -125,7 +122,7 @@ function Visualizer() {
               },
               mouse: {
                 down: () => mouseDown(x, y),
-                enter: () => mouseEnter(x, y),
+                enter: () => mouseEnterCallback(x, y),
               },
               isWall: false,
               isVisited: false,
@@ -146,7 +143,7 @@ function Visualizer() {
         if (!elem.classList.contains("cell")) return;
         mouseEnter(elem.dataset.x, elem.dataset.y);
       } catch (error) {
-        // Do nothing
+        return;
       }
     });
 
@@ -194,8 +191,17 @@ function Visualizer() {
                 {row.map((cell, colIndex) => {
                   return (
                     <Cell
-                      key={colIndex}
-                      node={cell}
+                      key={rowIndex + "-" + colIndex}
+                      x={cell.position.x}
+                      y={cell.position.y}
+                      mouseDown={cell.mouse.down}
+                      mouseEnter={cell.mouse.enter}
+                      isWall={cell.isWall}
+                      isVisited={cell.isVisited}
+                      isShortestPath={cell.isShortestPath}
+                      isSource={cell.isSource}
+                      isTarget={cell.isTarget}
+                      weight={cell.weight}
                       showBorders={state.settings.showBorders}
                     />
                   );
