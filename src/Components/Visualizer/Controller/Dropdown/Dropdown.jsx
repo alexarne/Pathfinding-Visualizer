@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from "react";
+import "./Dropdown.css";
 
-function Dropdown() {
+function Dropdown(props) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div>Dropdown</div>
-  )
+    <>
+      <button onClick={() => setOpen((prev) => !prev)}>D</button>
+      {open && props.children}
+    </>
+  );
 }
 
-export default Dropdown
+export default Dropdown;

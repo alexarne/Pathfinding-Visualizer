@@ -17,6 +17,12 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border: var(--grid-border-size) solid transparent;
+}
+
+.grid.border {
+    border-bottom-color: var(--grid-colour);
+    border-right-color: var(--grid-colour);
 }
 
 .row {

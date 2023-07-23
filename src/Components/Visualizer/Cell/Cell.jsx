@@ -15,7 +15,7 @@ function Cell({
   showBorders,
 }) {
   const ref = useRef();
-
+  // console.log(x, y);
   let nodeClass = "cell";
   if (showBorders) nodeClass += " anti-border";
   if (isSource) nodeClass += " source";

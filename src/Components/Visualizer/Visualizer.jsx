@@ -184,7 +184,7 @@ function Visualizer() {
         className={"visualizer" + (state.settings.showBorders ? " border" : "")}
         ref={visualizerRef}
       >
-        <div className={"grid"}>
+        <div className={"grid" + (state.settings.showBorders ? " border" : "")}>
           {grid.map((row, rowIndex) => {
             return (
               <div key={rowIndex} className="row">
@@ -232,8 +232,10 @@ function getCellDimensions(visualizerRef) {
     Math.floor(gridWidth / cellSize),
     Math.floor(gridHeight / cellSize),
   ];
-  dims[0] += dims[0] % 2 == 0 ? 1 : 2;
-  dims[1] += dims[1] % 2 == 0 ? 1 : 2;
+
+  // // Increase to span borders
+  // dims[0] += dims[0] % 2 == 0 ? 1 : 2;
+  // dims[1] += dims[1] % 2 == 0 ? 1 : 2;
 
   return dims;
 }
