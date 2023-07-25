@@ -1,0 +1,20 @@
+
+.dropdown-container {
+    
+}
+
+.dropdown-container .dropdown-menu {
+    
+}
+
+.dropdown-container .dropdown-menu .dropdown-item {
+    
+}
+
+.dropdown-container .dropdown-menu .dropdown-item.clickable {
+    cursor: pointer;
+}
+
+.dropdown-container .dropdown-menu .dropdown-item:hover {
+    background-color: red;
+}
