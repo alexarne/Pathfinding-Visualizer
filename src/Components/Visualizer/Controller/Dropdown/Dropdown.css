@@ -3,7 +3,18 @@
     position: relative;
 }
 
+.dropdown-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
 .dropdown-container {
+    position: absolute;
     width: 3em;
     height: fit-content;
     /* padding: 0.5em; */
@@ -11,7 +22,6 @@
     right: 0em;
     /* left: 0em; */
     transform: translateY(-100%) translateX(0%);
-    position: absolute;
     background-color: black;
 }
 
