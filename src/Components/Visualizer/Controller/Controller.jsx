@@ -10,40 +10,87 @@ function Controller({ state, reloadGrid }) {
   return (
     <div className="controller">
       <div className="controls">
-        <Dropdown icon="Mode">
+        <Dropdown icon="Mode" activeMenu={activeModesMenu}>
           <DropdownMenu name="modes-front">
-            <DropdownItem>kek</DropdownItem>
-            <DropdownItem onClick={() => setActiveModesMenu(1)}>
+            <DropdownItem>Paint Mode</DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                // set mode
+              }}
+              closeOnClick={true}
+            >
               kek2
             </DropdownItem>
-            <DropdownItem>kek3</DropdownItem>
-            <DropdownItem>kek4</DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                // set mode
+              }}
+              closeOnClick={true}
+            >
+              kek3
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                // set mode
+              }}
+              closeOnClick={true}
+            >
+              kek4
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
 
-        <Dropdown icon="Set">
+        <Dropdown icon="Set" activeMenu={activeSettingsMenu}>
           <DropdownMenu name="settings-front">
-            <DropdownItem>kek</DropdownItem>
-            <DropdownItem onClick={() => setActiveModesMenu(1)}>
+            <DropdownItem>Settings</DropdownItem>
+            <DropdownItem
+              onClick={() => setActiveSettingsMenu("settings-algorithm")}
+            >
               kek2
             </DropdownItem>
-            <DropdownItem>kek3</DropdownItem>
-            <DropdownItem>kek4</DropdownItem>
+            <DropdownItem
+              onClick={() => setActiveSettingsMenu("settings-maze")}
+            >
+              kek3
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => setActiveSettingsMenu("settings-speed")}
+            >
+              kek4
+            </DropdownItem>
           </DropdownMenu>
+
           <DropdownMenu name="settings-algorithm">
-            <DropdownItem>lmao</DropdownItem>
+            <DropdownItem
+              leftIcon={"<"}
+              onClick={() => setActiveSettingsMenu("settings-front")}
+            >
+              Algorithm
+            </DropdownItem>
             <DropdownItem>lmao2</DropdownItem>
             <DropdownItem>lmao3</DropdownItem>
             <DropdownItem>lmao4</DropdownItem>
           </DropdownMenu>
+
           <DropdownMenu name="settings-maze">
-            <DropdownItem>pog</DropdownItem>
+            <DropdownItem
+              leftIcon={"<"}
+              onClick={() => setActiveSettingsMenu("settings-front")}
+            >
+              Generate Maze
+            </DropdownItem>
             <DropdownItem>pog2</DropdownItem>
             <DropdownItem>pog3</DropdownItem>
             <DropdownItem>pog4</DropdownItem>
           </DropdownMenu>
+
           <DropdownMenu name="settings-speed">
-            <DropdownItem>speed</DropdownItem>
+            <DropdownItem
+              leftIcon={"<"}
+              onClick={() => setActiveSettingsMenu("settings-front")}
+            >
+              Animation Speed
+            </DropdownItem>
             <DropdownItem>speed2</DropdownItem>
             <DropdownItem>speed3</DropdownItem>
             <DropdownItem>speed4</DropdownItem>

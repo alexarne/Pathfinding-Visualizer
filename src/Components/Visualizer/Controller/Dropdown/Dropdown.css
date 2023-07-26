@@ -1,6 +1,18 @@
 
+.dropdown-button {
+    position: relative;
+}
+
 .dropdown-container {
-    
+    width: 3em;
+    height: fit-content;
+    /* padding: 0.5em; */
+    top: 0em;
+    right: 0em;
+    /* left: 0em; */
+    transform: translateY(-100%) translateX(0%);
+    position: absolute;
+    background-color: black;
 }
 
 .dropdown-container .dropdown-menu {
