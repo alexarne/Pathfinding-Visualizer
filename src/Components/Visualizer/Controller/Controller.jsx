@@ -1,6 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Controller.css";
 import { Dropdown, DropdownMenu, DropdownItem } from "./Dropdown/Dropdown";
+import {
+  getVisitedArrays,
+  getAbbreviation,
+  pathfindingAlgorithms,
+} from "../../../utils/pathfindingAlgorithms";
+import { getMazeArray, mazeAlgorithms } from "../../../utils/mazeAlgorithms";
+import {
+  getAnimationDelay,
+  animationSpeeds,
+  getWeight,
+  cellWeights,
+} from "../../../utils/settings";
 
 function Controller({ state, reloadGrid }) {
   return (
@@ -8,130 +20,129 @@ function Controller({ state, reloadGrid }) {
       <div className="controls">
         <Dropdown icon="Mode">
           <DropdownMenu name="modes-front">
-            <DropdownItem>Paint Mode</DropdownItem>
+            <DropdownItem type={"title"}>Paint Mode</DropdownItem>
+
+            {cellWeights.map((weightType) => (
+              <DropdownItem
+                key={weightType}
+                closeOnClick={true}
+                rightIcon={getWeight[weightType]}
+                onClick={() => {
+                  // click action
+                }}
+              >
+                {weightType}
+              </DropdownItem>
+            ))}
+
             <DropdownItem
+              key={"Wall"}
               closeOnClick={true}
+              rightIcon={"∞"}
               onClick={() => {
-                // set mode
+                // click action
               }}
             >
-              kek2
-            </DropdownItem>
-            <DropdownItem
-              closeOnClick={true}
-              onClick={() => {
-                // set mode
-              }}
-            >
-              kek3
-            </DropdownItem>
-            <DropdownItem
-              closeOnClick={true}
-              onClick={() => {
-                // set mode
-              }}
-            >
-              kek4
+              Wall
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
 
         <Dropdown icon="Set">
           <DropdownMenu name="settings-front">
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownItem goToMenu={"settings-algorithm"}>kek2</DropdownItem>
-            <DropdownItem goToMenu={"settings-maze"}>kek3</DropdownItem>
-            <DropdownItem goToMenu={"settings-speed"}>kek4</DropdownItem>
-          </DropdownMenu>
-
-          <DropdownMenu name="settings-algorithm">
-            <DropdownItem leftIcon={"<"} goToMenu={"settings-front"}>
+            <DropdownItem type={"title"}>Settings</DropdownItem>
+            <DropdownItem
+              goToMenu={"settings-algorithm"}
+              rightIcon={getAbbreviation[state.settings.algorithm] + ">"}
+            >
               Algorithm
             </DropdownItem>
             <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
+              goToMenu={"settings-speed"}
+              rightIcon={state.settings.animationSpeed + ">"}
             >
-              lmao2
+              Animation Speed
             </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              lmao3
-            </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              lmao4
-            </DropdownItem>
-          </DropdownMenu>
-
-          <DropdownMenu name="settings-maze">
-            <DropdownItem leftIcon={"<"} goToMenu={"settings-front"}>
+            <DropdownItem goToMenu={"settings-maze"} rightIcon={">"}>
               Generate Maze
             </DropdownItem>
             <DropdownItem
-              goToMenu={"settings-front"}
+              closeOnClick={true}
+              leftIcon={"trashcan"}
               onClick={() => {
-                // click action
+                // Action
               }}
             >
-              pog2
-            </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              pog3
-            </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              pog4
+              Clear Board
             </DropdownItem>
           </DropdownMenu>
 
+          <DropdownMenu name="settings-algorithm">
+            <DropdownItem
+              leftIcon={"<"}
+              goToMenu={"settings-front"}
+              type={"title"}
+            >
+              Algorithm
+            </DropdownItem>
+
+            {pathfindingAlgorithms.map((algo) => (
+              <DropdownItem
+                key={algo}
+                goToMenu={"settings-front"}
+                onClick={() => {
+                  // click action
+                }}
+              >
+                {algo}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+
+          <DropdownMenu name="settings-maze">
+            <DropdownItem
+              leftIcon={"<"}
+              goToMenu={"settings-front"}
+              type={"title"}
+            >
+              Generate Maze
+            </DropdownItem>
+
+            {mazeAlgorithms.map((algo) => (
+              <DropdownItem
+                key={algo}
+                closeOnClick={true}
+                goToMenu={"settings-front"}
+                onClick={() => {
+                  // click action
+                }}
+              >
+                {algo}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+
           <DropdownMenu name="settings-speed">
-            <DropdownItem leftIcon={"<"} goToMenu={"settings-front"}>
+            <DropdownItem
+              leftIcon={"<"}
+              goToMenu={"settings-front"}
+              type={"title"}
+            >
               Animation Speed
             </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              speed2
-            </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              speed3
-            </DropdownItem>
-            <DropdownItem
-              goToMenu={"settings-front"}
-              onClick={() => {
-                // click action
-              }}
-            >
-              speed4
-            </DropdownItem>
+
+            {animationSpeeds.map((speed) => (
+              <DropdownItem
+                key={speed}
+                goToMenu={"settings-front"}
+                rightIcon={getAnimationDelay[speed]}
+                onClick={() => {
+                  // click action
+                }}
+              >
+                {speed}
+              </DropdownItem>
+            ))}
           </DropdownMenu>
         </Dropdown>
 

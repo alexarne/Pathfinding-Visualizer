@@ -21,8 +21,8 @@ function Visualizer() {
       holdingTarget: false,
     },
     settings: {
-      stepDelay: 100,
-      algorithm: "dijkstra",
+      animationSpeed: "Fast",
+      algorithm: "Dijkstra",
       paintWalls: true,
       showBorders: true,
       paintWeight: 3,
@@ -31,8 +31,8 @@ function Visualizer() {
 
   function loadSettings() {
     const settings = {
-      stepDelay: 100,
-      algorithm: "dijkstra",
+      animationSpeed: "Fast",
+      algorithm: "Dijkstra's Algorithm",
       paintWalls: true,
       showBorders: true,
       paintWeight: 3,

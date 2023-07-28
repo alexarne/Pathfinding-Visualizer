@@ -1,42 +1,61 @@
-
 .dropdown-button {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-backdrop {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .dropdown-container {
-    position: absolute;
-    width: 3em;
-    height: fit-content;
-    /* padding: 0.5em; */
-    top: 0em;
-    right: 0em;
-    /* left: 0em; */
-    transform: translateY(-100%) translateX(0%);
-    background-color: black;
+  font-size: 1.1em;
+  z-index: 5;
+  position: absolute;
+  width: 12em;
+  height: fit-content;
+  top: 0em;
+  right: 0;
+  /* padding: 2em; */
+  /* left: 0;
+    bottom: 0; */
+  transform: translateY(-100%) translateX(50%);
+  background-color: black;
 }
 
-.dropdown-container .dropdown-menu {
-    
+.dropdown-menu {
 }
 
-.dropdown-container .dropdown-menu .dropdown-item {
-    
+.dropdown-item {
+  position: relative;
 }
 
-.dropdown-container .dropdown-menu .dropdown-item.clickable {
-    cursor: pointer;
+.dropdown-item.clickable {
+  cursor: pointer;
 }
 
-.dropdown-container .dropdown-menu .dropdown-item:hover {
-    background-color: red;
+.dropdown-item.clickable:hover {
+  background-color: red;
+}
+
+.dropdown-title .dropdown-item-icon-left {
+  position: absolute;
+  left: 0;
+}
+
+.dropdown-item-icon-right {
+  position: absolute;
+  right: 0;
+}
+
+.dropdown-title {
+  font-size: 1.2em;
+  font-weight: 500;
+  justify-content: center;
+  text-align: center;
 }

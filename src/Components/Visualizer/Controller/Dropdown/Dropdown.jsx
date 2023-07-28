@@ -37,8 +37,8 @@ export function Dropdown(props) {
 
 export function DropdownMenu(props) {
   const items = Array.isArray(props.children)
-    ? props.children
-    : [props.children];
+    ? props.children.flat()
+    : [props.children].flat();
 
   return (
     <div className="dropdown-menu" key={props.name}>
@@ -60,7 +60,8 @@ export function DropdownItem(props) {
         "dropdown-item" +
         (props.onClick !== undefined || props.closeOnClick || props.goToMenu
           ? " clickable"
-          : "")
+          : "") +
+        (props.type === "title" ? " dropdown-title" : "")
       }
       onClick={() => {
         if (props.goToMenu !== undefined) props.setActiveMenu(props.goToMenu);
