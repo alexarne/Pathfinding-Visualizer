@@ -2,42 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Controller from "./Controller/Controller";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
+import useParams from "../Context";
 
 function Visualizer() {
-  const [state, setState] = useState({
-    currentlyVisualizingAlgorithm: false,
-    currentlyGeneratingMaze: false,
-    sourcePosition: {
-      x: 0,
-      y: 0,
-    },
-    targetPosition: {
-      x: 1,
-      y: 0,
-    },
-    mouse: {
-      isPressed: false,
-      holdingSource: false,
-      holdingTarget: false,
-    },
-    settings: {
-      animationSpeed: "Fast",
-      algorithm: "Dijkstra",
-      paintWalls: true,
-      showBorders: true,
-      paintWeight: 3,
-    },
-  });
+  const state = useParams();
 
   function loadSettings() {
-    const settings = {
-      animationSpeed: "Fast",
-      algorithm: "Dijkstra's Algorithm",
-      paintWalls: true,
-      showBorders: true,
-      paintWeight: 3,
-    };
-    state.settings = settings;
+    state.settings.animationSpeed = "Normal";
+    state.settings.algorithm = "Dijkstra's Algorithm";
   }
 
   function saveSettings() {
@@ -85,7 +57,8 @@ function Visualizer() {
       )
         grid[y][x].isWall = state.settings.paintWalls;
 
-      grid[y][x].weight = state.settings.paintWeight;
+      if (!state.settings.paintWalls)
+        grid[y][x].weight = state.settings.paintWeight;
       return [...grid];
     });
   };

@@ -13,8 +13,11 @@ import {
   getWeight,
   cellWeights,
 } from "../../../utils/settings";
+import useParams from "../../Context";
 
-function Controller({ state, reloadGrid }) {
+function Controller() {
+  const state = useParams();
+
   return (
     <div className="controller">
       <div className="controls">
@@ -28,7 +31,8 @@ function Controller({ state, reloadGrid }) {
                 closeOnClick={true}
                 rightIcon={getWeight[weightType]}
                 onClick={() => {
-                  // click action
+                  state.settings.paintWalls = false;
+                  state.settings.paintWeight = getWeight[weightType];
                 }}
               >
                 {weightType}
@@ -40,7 +44,7 @@ function Controller({ state, reloadGrid }) {
               closeOnClick={true}
               rightIcon={"∞"}
               onClick={() => {
-                // click action
+                state.settings.paintWalls = true;
               }}
             >
               Wall
@@ -91,7 +95,7 @@ function Controller({ state, reloadGrid }) {
                 key={algo}
                 goToMenu={"settings-front"}
                 onClick={() => {
-                  // click action
+                  state.setAlgorithm(algo);
                 }}
               >
                 {algo}
@@ -137,7 +141,7 @@ function Controller({ state, reloadGrid }) {
                 goToMenu={"settings-front"}
                 rightIcon={getAnimationDelay[speed]}
                 onClick={() => {
-                  // click action
+                  state.setAnimationSpeed(speed);
                 }}
               >
                 {speed}
