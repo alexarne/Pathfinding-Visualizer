@@ -71,6 +71,15 @@ function Controller() {
               Generate Maze
             </DropdownItem>
             <DropdownItem
+              leftIcon={"grid"}
+              rightIcon={state.settings.showBorders ? "ON" : "OFF"}
+              onClick={() => {
+                state.settings.setShowBorders(!state.settings.showBorders);
+              }}
+            >
+              Toggle Grid
+            </DropdownItem>
+            <DropdownItem
               closeOnClick={true}
               leftIcon={"trashcan"}
               onClick={() => {
@@ -95,7 +104,7 @@ function Controller() {
                 key={algo}
                 goToMenu={"settings-front"}
                 onClick={() => {
-                  state.setAlgorithm(algo);
+                  state.settings.setAlgorithm(algo);
                 }}
               >
                 {algo}
@@ -141,7 +150,7 @@ function Controller() {
                 goToMenu={"settings-front"}
                 rightIcon={getAnimationDelay[speed]}
                 onClick={() => {
-                  state.setAnimationSpeed(speed);
+                  state.settings.setAnimationSpeed(speed);
                 }}
               >
                 {speed}

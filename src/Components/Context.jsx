@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const context = createContext();
 
@@ -8,8 +8,6 @@ export default function useParams() {
 
 export function ParamsProvider({ children }) {
   //   const [mode, setmode] = useState(null);
-  const [algorithm, setAlgorithm] = useState("Dijkstra's Algorithm");
-  const [animationSpeed, setAnimationSpeed] = useState("Normal");
   //   const [run, setrun] = useState(false);
   //   const [grid, setgrid] = useState(getGrid(50, 25));
   //   const [editing, seteditFlag] = useState(false);
@@ -34,14 +32,15 @@ export function ParamsProvider({ children }) {
       holdingTarget: false,
     },
     settings: {
-      animationSpeed,
-      algorithm,
+      // animationSpeed, // Declared in Visualizer.jsx
+      // algorithm,
+      // showBorders: true,
       paintWalls: true,
-      showBorders: true,
       paintWeight: 3,
+      // setShowBorders,
+      // setAlgorithm,
+      // setAnimationSpeed,
     },
-    setAlgorithm,
-    setAnimationSpeed,
   };
 
   return (

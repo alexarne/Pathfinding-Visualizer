@@ -6,15 +6,32 @@ import useParams from "../Context";
 
 function Visualizer() {
   const state = useParams();
+  const [algorithm, setAlgorithm] = useState("Dijkstra's Algorithm");
+  const [animationSpeed, setAnimationSpeed] = useState("Normal");
+  const [showBorders, setShowBorders] = useState(true);
+
+  state.settings.algorithm = algorithm;
+  state.settings.animationSpeed = animationSpeed;
+  state.settings.showBorders = showBorders;
+  state.settings.setAlgorithm = setAlgorithm;
+  state.settings.setAnimationSpeed = setAnimationSpeed;
+  state.settings.setShowBorders = setShowBorders;
 
   function loadSettings() {
-    state.settings.animationSpeed = "Normal";
-    state.settings.algorithm = "Dijkstra's Algorithm";
+    state.settings.setAnimationSpeed("Normal");
+    state.settings.setAlgorithm("Dijkstra's Algorithm");
+    state.settings.setShowBorders(true);
   }
 
   function saveSettings() {
     const settings = state.settings;
   }
+
+  useEffect(saveSettings, [
+    state.settings.animationSpeed,
+    state.settings.algorithm,
+    state.settings.showBorders,
+  ]);
 
   // Initialize grid and settings
   const visualizerRef = useRef(null);
@@ -23,10 +40,6 @@ function Visualizer() {
     setGrid(createGrid());
     loadSettings();
   }, []);
-
-  function reloadGrid() {
-    setGrid([...grid]);
-  }
 
   // Mouse actions for cells
   const mouseEnter = (x, y) => {
@@ -57,8 +70,10 @@ function Visualizer() {
       )
         grid[y][x].isWall = state.settings.paintWalls;
 
-      if (!state.settings.paintWalls)
+      if (!state.settings.paintWalls) {
         grid[y][x].weight = state.settings.paintWeight;
+        grid[y][x].isWall = false;
+      }
       return [...grid];
     });
   };
@@ -145,12 +160,6 @@ function Visualizer() {
     return grid;
   }
 
-  function setBorders(show) {
-    if (state.settings.showBorders == show) return;
-    state.settings.showBorders = show;
-    reloadGrid();
-  }
-
   return (
     <>
       <div
@@ -184,7 +193,7 @@ function Visualizer() {
           })}
         </div>
       </div>
-      <Controller state={state} reloadGrid={reloadGrid} />
+      <Controller />
     </>
   );
 }
