@@ -18,20 +18,16 @@ function Visualizer() {
   state.settings.setShowBorders = setShowBorders;
 
   function loadSettings() {
+    console.log("loading settings");
     state.settings.setAnimationSpeed("Normal");
     state.settings.setAlgorithm("Dijkstra's Algorithm");
     state.settings.setShowBorders(true);
   }
 
   function saveSettings() {
+    console.log("saving settings");
     const settings = state.settings;
   }
-
-  useEffect(saveSettings, [
-    state.settings.animationSpeed,
-    state.settings.algorithm,
-    state.settings.showBorders,
-  ]);
 
   // Initialize grid and settings
   const visualizerRef = useRef(null);
@@ -40,6 +36,19 @@ function Visualizer() {
     setGrid(createGrid());
     loadSettings();
   }, []);
+
+  useEffect(saveSettings, [
+    state.settings.animationSpeed,
+    state.settings.algorithm,
+    state.settings.showBorders,
+  ]);
+
+  // Cell handlers (by refs)
+  function setBorders(show) {}
+  function setWall(x, y) {}
+  function setWeight(x, y) {}
+  function setSource(x, y) {}
+  function setTarget(x, y) {}
 
   // Mouse actions for cells
   const mouseEnter = (x, y) => {
