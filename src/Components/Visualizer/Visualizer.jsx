@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Controller from "./Controller/Controller";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
@@ -6,9 +12,10 @@ import useParams from "../Context";
 
 function Visualizer() {
   const state = useParams();
-  const [algorithm, setAlgorithm] = useState("Dijkstra's Algorithm");
-  const [animationSpeed, setAnimationSpeed] = useState("Normal");
-  const [showBorders, setShowBorders] = useState(true);
+  const settings = getSettings();
+  const [algorithm, setAlgorithm] = useState(settings.algorithm);
+  const [animationSpeed, setAnimationSpeed] = useState(settings.animationSpeed);
+  const [showBorders, setShowBorders] = useState(settings.showBorders);
 
   state.settings.algorithm = algorithm;
   state.settings.animationSpeed = animationSpeed;
@@ -17,24 +24,36 @@ function Visualizer() {
   state.settings.setAnimationSpeed = setAnimationSpeed;
   state.settings.setShowBorders = setShowBorders;
 
-  function loadSettings() {
-    console.log("loading settings");
-    state.settings.setAnimationSpeed("Normal");
-    state.settings.setAlgorithm("Dijkstra's Algorithm");
-    state.settings.setShowBorders(true);
+  function getSettings() {
+    const settings = JSON.parse(localStorage.getItem("settings"));
+    if (settings === null)
+      return {
+        algorithm: "Dijkstra's Algorithm",
+        animationSpeed: "Normal",
+        showBorders: true,
+      };
+    return settings;
   }
 
   function saveSettings() {
-    console.log("saving settings");
-    const settings = state.settings;
+    const settings = {
+      animationSpeed: state.settings.animationSpeed,
+      algorithm: state.settings.algorithm,
+      showBorders: state.settings.showBorders,
+    };
+    localStorage.setItem("settings", JSON.stringify(settings));
   }
 
   // Initialize grid and settings
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
+  const [refGrid, setRefGrid] = useState([[]]);
+  state.refGrid = refGrid;
   useEffect(() => {
-    setGrid(createGrid());
-    loadSettings();
+    let [width, height] = getCellDimensions(visualizerRef);
+    setGrid(createGrid(width, height));
+    setRefGrid(createRefGrid(width, height));
+    // loadSettings();
   }, []);
 
   useEffect(saveSettings, [
@@ -53,6 +72,9 @@ function Visualizer() {
   // Mouse actions for cells
   const mouseEnter = (x, y) => {
     if (!state.mouse.isPressed) return;
+    // console.log(state.refGrid);
+    // return;
+
     if (state.mouse.holdingSource) {
       setGrid((grid) => {
         grid[state.sourcePosition.y][state.sourcePosition.x].isSource = false;
@@ -104,8 +126,7 @@ function Visualizer() {
     mouseEnter(x, y);
   }, []);
 
-  function createGrid() {
-    let [width, height] = getCellDimensions(visualizerRef);
+  function createGrid(width, height) {
     const grid = Array(height)
       .fill(0)
       .map((row, y) => {
@@ -169,6 +190,17 @@ function Visualizer() {
     return grid;
   }
 
+  function createRefGrid(width, height) {
+    const refGrid = Array(height)
+      .fill(0)
+      .map((row, y) => {
+        return Array(width)
+          .fill(0)
+          .map(() => createRef());
+      });
+    return refGrid;
+  }
+
   return (
     <>
       <div
@@ -176,13 +208,14 @@ function Visualizer() {
         ref={visualizerRef}
       >
         <div className={"grid" + (state.settings.showBorders ? " border" : "")}>
-          {grid.map((row, rowIndex) => {
+          {grid.map((row, y) => {
             return (
-              <div key={rowIndex} className="row">
-                {row.map((cell, colIndex) => {
+              <div key={y} className="row">
+                {row.map((cell, x) => {
                   return (
                     <Cell
-                      key={rowIndex + "-" + colIndex}
+                      ref={refGrid[y][x]}
+                      key={y + "-" + x}
                       x={cell.position.x}
                       y={cell.position.y}
                       mouseDown={cell.mouse.down}
