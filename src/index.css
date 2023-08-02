@@ -14,17 +14,17 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --white: #F2F2F2;
+  --white: #f2f2f2;
   --white-transparent: #f2f2f23f;
-  --background-colour: #F2F2F2;
-  --primary1-colour: #2C3E50;
+  --background-colour: #f2f2f2;
+  --primary1-colour: #2c3e50;
   --primary2-colour: #57687c;
-  
+
   --grid-colour: #b4c7dd;
   --grid-border-size: 0.0625em;
 
   --button-primary: #e8e8e8;
-  --button-hover: #F2F2F2;
+  --button-hover: #f2f2f2;
   --button-border: #646cff;
 
   overflow: hidden;
@@ -37,7 +37,7 @@
   flex-flow: column;
   /* "Small viewport height" to account 
   for navigation bar on mobile */
-  height: 100svh; 
+  height: 100svh;
 }
 #root .header {
   flex: 0 1 auto;

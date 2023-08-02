@@ -1,10 +1,4 @@
-import React, {
-  createRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Controller from "./Controller/Controller";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
@@ -47,12 +41,8 @@ function Visualizer() {
   // Initialize grid and settings
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
-  const [refGrid, setRefGrid] = useState([[]]);
-  state.refGrid = refGrid;
   useEffect(() => {
-    let [width, height] = getCellDimensions(visualizerRef);
-    setGrid(createGrid(width, height));
-    setRefGrid(createRefGrid(width, height));
+    setGrid(createGrid());
   }, []);
 
   useEffect(saveSettings, [
@@ -71,8 +61,6 @@ function Visualizer() {
   // Mouse actions for cells
   const mouseEnter = (x, y) => {
     if (!state.mouse.isPressed) return;
-    // console.log(state.refGrid);
-    // return;
 
     if (state.mouse.holdingSource) {
       setGrid((grid) => {
@@ -125,7 +113,8 @@ function Visualizer() {
     mouseEnter(x, y);
   }, []);
 
-  function createGrid(width, height) {
+  function createGrid() {
+    let [width, height] = getCellDimensions(visualizerRef);
     const grid = Array(height)
       .fill(0)
       .map((row, y) => {
@@ -189,17 +178,6 @@ function Visualizer() {
     return grid;
   }
 
-  function createRefGrid(width, height) {
-    const refGrid = Array(height)
-      .fill(0)
-      .map((row, y) => {
-        return Array(width)
-          .fill(0)
-          .map(() => createRef());
-      });
-    return refGrid;
-  }
-
   return (
     <>
       <div
@@ -213,7 +191,6 @@ function Visualizer() {
                 {row.map((cell, x) => {
                   return (
                     <Cell
-                      ref={refGrid[y][x]}
                       key={y + "-" + x}
                       x={cell.position.x}
                       y={cell.position.y}

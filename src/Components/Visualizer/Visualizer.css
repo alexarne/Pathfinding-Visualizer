@@ -1,30 +1,23 @@
-
 .visualizer {
-    background-color: var(--background-colour);
-    overflow: hidden;
-    position: relative;
-    box-sizing: border-box;
-    border: 0 solid var(--grid-colour);
-}
-
-.visualizer.border {
-    border-width: var(--grid-border-size);
+  background-color: var(--background-colour);
+  overflow: hidden;
+  position: relative;
 }
 
 .grid {
-    width: min-content;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border: var(--grid-border-size) solid transparent;
+  width: min-content;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: var(--grid-border-size) solid transparent;
 }
 
 .grid.border {
-    border-bottom-color: var(--grid-colour);
-    border-right-color: var(--grid-colour);
+  border-bottom-color: var(--grid-colour);
+  border-right-color: var(--grid-colour);
 }
 
 .row {
-    display: flex;
+  display: flex;
 }
