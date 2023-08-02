@@ -53,7 +53,6 @@ function Visualizer() {
     let [width, height] = getCellDimensions(visualizerRef);
     setGrid(createGrid(width, height));
     setRefGrid(createRefGrid(width, height));
-    // loadSettings();
   }, []);
 
   useEffect(saveSettings, [
