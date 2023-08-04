@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 
 const context = createContext();
 
@@ -32,15 +32,16 @@ export function ParamsProvider({ children }) {
       holdingTarget: false,
     },
     settings: {
-      // animationSpeed, // Declared in Visualizer.jsx
-      // algorithm,
-      // showBorders: true,
       paintWalls: true,
       paintWeight: 3,
+      // animationSpeed, // Declared in Controller.jsx
+      // algorithm,
+      // showBorders: true,
       // setShowBorders,
       // setAlgorithm,
       // setAnimationSpeed,
     },
+    // reloadGrid, // Declared in Visualizer.jsx
   };
 
   return (

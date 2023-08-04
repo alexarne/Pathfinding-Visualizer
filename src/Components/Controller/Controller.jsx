@@ -1,22 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Controller.css";
 import { Dropdown, DropdownMenu, DropdownItem } from "./Dropdown/Dropdown";
 import {
   getVisitedArrays,
   getAbbreviation,
   pathfindingAlgorithms,
-} from "../../../utils/pathfindingAlgorithms";
-import { getMazeArray, mazeAlgorithms } from "../../../utils/mazeAlgorithms";
+} from "../../utils/pathfindingAlgorithms";
+import { getMazeArray, mazeAlgorithms } from "../../utils/mazeAlgorithms";
 import {
   getAnimationDelay,
   animationSpeeds,
   getWeight,
   cellWeights,
-} from "../../../utils/settings";
-import useParams from "../../Context";
+} from "../../utils/settings";
+import useParams from "../Context";
 
 function Controller() {
+  console.log("render controller");
   const state = useParams();
+  const settings = getSettings();
+  const [algorithm, setAlgorithm] = useState(settings.algorithm);
+  const [animationSpeed, setAnimationSpeed] = useState(settings.animationSpeed);
+  const [showBorders, setShowBorders] = useState(settings.showBorders);
+
+  state.settings.algorithm = algorithm;
+  state.settings.animationSpeed = animationSpeed;
+  state.settings.showBorders = showBorders;
+  state.settings.setAlgorithm = setAlgorithm;
+  state.settings.setAnimationSpeed = setAnimationSpeed;
+  state.settings.setShowBorders = (show) => {
+    setShowBorders(show);
+    state.reloadGrid();
+  };
+
+  function getSettings() {
+    const settings = JSON.parse(localStorage.getItem("settings"));
+    if (settings === null)
+      return {
+        algorithm: "Dijkstra's Algorithm",
+        animationSpeed: "Normal",
+        showBorders: true,
+      };
+    return settings;
+  }
+
+  function saveSettings() {
+    const settings = {
+      animationSpeed: state.settings.animationSpeed,
+      algorithm: state.settings.algorithm,
+      showBorders: state.settings.showBorders,
+    };
+    localStorage.setItem("settings", JSON.stringify(settings));
+  }
+
+  useEffect(saveSettings, [
+    state.settings.animationSpeed,
+    state.settings.algorithm,
+    state.settings.showBorders,
+  ]);
 
   return (
     <div className="controller">

@@ -1,62 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Controller from "./Controller/Controller";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
 import useParams from "../Context";
 
 function Visualizer() {
+  console.log("render visualizer");
   const state = useParams();
-  const settings = getSettings();
-  const [algorithm, setAlgorithm] = useState(settings.algorithm);
-  const [animationSpeed, setAnimationSpeed] = useState(settings.animationSpeed);
-  const [showBorders, setShowBorders] = useState(settings.showBorders);
-
-  state.settings.algorithm = algorithm;
-  state.settings.animationSpeed = animationSpeed;
-  state.settings.showBorders = showBorders;
-  state.settings.setAlgorithm = setAlgorithm;
-  state.settings.setAnimationSpeed = setAnimationSpeed;
-  state.settings.setShowBorders = setShowBorders;
-
-  function getSettings() {
-    const settings = JSON.parse(localStorage.getItem("settings"));
-    if (settings === null)
-      return {
-        algorithm: "Dijkstra's Algorithm",
-        animationSpeed: "Normal",
-        showBorders: true,
-      };
-    return settings;
-  }
-
-  function saveSettings() {
-    const settings = {
-      animationSpeed: state.settings.animationSpeed,
-      algorithm: state.settings.algorithm,
-      showBorders: state.settings.showBorders,
-    };
-    localStorage.setItem("settings", JSON.stringify(settings));
-  }
 
   // Initialize grid and settings
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
   useEffect(() => {
     setGrid(createGrid());
+    state.reloadGrid = () => {
+      setGrid((prev) => prev.slice());
+    };
   }, []);
-
-  useEffect(saveSettings, [
-    state.settings.animationSpeed,
-    state.settings.algorithm,
-    state.settings.showBorders,
-  ]);
-
-  // Cell handlers (by refs)
-  function setBorders(show) {}
-  function setWall(x, y) {}
-  function setWeight(x, y) {}
-  function setSource(x, y) {}
-  function setTarget(x, y) {}
 
   // Mouse actions for cells
   const mouseEnter = (x, y) => {
@@ -179,40 +138,37 @@ function Visualizer() {
   }
 
   return (
-    <>
-      <div
-        className={"visualizer" + (state.settings.showBorders ? " border" : "")}
-        ref={visualizerRef}
-      >
-        <div className={"grid" + (state.settings.showBorders ? " border" : "")}>
-          {grid.map((row, y) => {
-            return (
-              <div key={y} className="row">
-                {row.map((cell, x) => {
-                  return (
-                    <Cell
-                      key={y + "-" + x}
-                      x={cell.position.x}
-                      y={cell.position.y}
-                      mouseDown={cell.mouse.down}
-                      mouseEnter={cell.mouse.enter}
-                      isWall={cell.isWall}
-                      isVisited={cell.isVisited}
-                      isShortestPath={cell.isShortestPath}
-                      isSource={cell.isSource}
-                      isTarget={cell.isTarget}
-                      weight={cell.weight}
-                      showBorders={state.settings.showBorders}
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
+    <div
+      className={"visualizer" + (state.settings.showBorders ? " border" : "")}
+      ref={visualizerRef}
+    >
+      <div className={"grid" + (state.settings.showBorders ? " border" : "")}>
+        {grid.map((row, y) => {
+          return (
+            <div key={y} className="row">
+              {row.map((cell, x) => {
+                return (
+                  <Cell
+                    key={y + "-" + x}
+                    x={cell.position.x}
+                    y={cell.position.y}
+                    mouseDown={cell.mouse.down}
+                    mouseEnter={cell.mouse.enter}
+                    isWall={cell.isWall}
+                    isVisited={cell.isVisited}
+                    isShortestPath={cell.isShortestPath}
+                    isSource={cell.isSource}
+                    isTarget={cell.isTarget}
+                    weight={cell.weight}
+                    showBorders={state.settings.showBorders}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
-      <Controller />
-    </>
+    </div>
   );
 }
 
