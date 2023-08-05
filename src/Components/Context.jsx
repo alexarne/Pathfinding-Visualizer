@@ -41,7 +41,8 @@ export function ParamsProvider({ children }) {
       // setAlgorithm,
       // setAnimationSpeed,
     },
-    // reloadGrid, // Declared in Visualizer.jsx
+    // grid, // Declared in Visualizer.jsx
+    // reloadGrid,
   };
 
   return (

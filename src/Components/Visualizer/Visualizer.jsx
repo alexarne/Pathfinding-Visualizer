@@ -10,6 +10,7 @@ function Visualizer() {
   // Initialize grid and settings
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
+  state.grid = grid;
   useEffect(() => {
     setGrid(createGrid());
     state.reloadGrid = () => {

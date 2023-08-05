@@ -28,10 +28,7 @@ function Controller() {
   state.settings.showBorders = showBorders;
   state.settings.setAlgorithm = setAlgorithm;
   state.settings.setAnimationSpeed = setAnimationSpeed;
-  state.settings.setShowBorders = (show) => {
-    setShowBorders(show);
-    state.reloadGrid();
-  };
+  state.settings.setShowBorders = setShowBorders;
 
   function getSettings() {
     const settings = JSON.parse(localStorage.getItem("settings"));
@@ -52,6 +49,10 @@ function Controller() {
     };
     localStorage.setItem("settings", JSON.stringify(settings));
   }
+
+  useEffect(() => {
+    state.reloadGrid();
+  }, [state.settings.showBorders]);
 
   useEffect(saveSettings, [
     state.settings.animationSpeed,
@@ -201,7 +202,20 @@ function Controller() {
         </Dropdown>
 
         <div className="separator"></div>
-        <button>Play</button>
+        <button
+          onClick={() => {
+            const [visitedCellsInOrder, shortestPathInOrder] = getVisitedArrays(
+              state.settings.algorithm,
+              state.grid,
+              state.sourcePosition,
+              state.targetPosition
+            );
+            console.log(visitedCellsInOrder);
+            console.log(shortestPathInOrder);
+          }}
+        >
+          Play
+        </button>
       </div>
     </div>
   );
