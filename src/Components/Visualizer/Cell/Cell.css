@@ -65,6 +65,7 @@
 }
 
 .cell-overlay.shortest {
+  background-color: rgba(218, 0, 164, 0.5);
 }
 
 @keyframes wallAnimation {

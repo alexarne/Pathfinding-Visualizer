@@ -16,8 +16,11 @@ export function ParamsProvider({ children }) {
   //   const end = useRef({ x: 48, y: 23 });
 
   const state = {
-    currentlyVisualizingAlgorithm: false,
-    currentlyGeneratingMaze: false,
+    visualizer: {
+      currentlyVisualizingAlgorithm: false,
+      currentlyGeneratingMaze: false,
+      // playAlgorithm, // Declared in Visualizer.jsx
+    },
     sourcePosition: {
       x: 0,
       y: 0,

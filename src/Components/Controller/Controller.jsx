@@ -202,20 +202,7 @@ function Controller() {
         </Dropdown>
 
         <div className="separator"></div>
-        <button
-          onClick={() => {
-            const [visitedCellsInOrder, shortestPathInOrder] = getVisitedArrays(
-              state.settings.algorithm,
-              state.grid,
-              state.sourcePosition,
-              state.targetPosition
-            );
-            console.log(visitedCellsInOrder);
-            console.log(shortestPathInOrder);
-          }}
-        >
-          Play
-        </button>
+        <button onClick={() => state.visualizer.playAlgorithm()}>Play</button>
       </div>
     </div>
   );

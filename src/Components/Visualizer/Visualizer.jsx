@@ -2,10 +2,45 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cell from "./Cell/Cell";
 import "./Visualizer.css";
 import useParams from "../Context";
+import { getVisitedArrays } from "../../utils/pathfindingAlgorithms";
+import { getAnimationDelay } from "../../utils/settings";
 
 function Visualizer() {
   console.log("render visualizer");
   const state = useParams();
+
+  state.visualizer.playAlgorithm = () => {
+    const [visitedCellsInOrder, shortestPathInOrder] = getVisitedArrays(
+      state.settings.algorithm,
+      state.grid,
+      state.sourcePosition,
+      state.targetPosition
+    );
+    // Mark visited cells
+    for (let i = 0; i < visitedCellsInOrder.length; ++i) {
+      setTimeout(() => {
+        const x = visitedCellsInOrder[i].x;
+        const y = visitedCellsInOrder[i].y;
+        setGrid((grid) => {
+          grid[y][x].isVisited = true;
+          return [...grid];
+        });
+        // If last visited cell, start marking path cells
+        if (i == visitedCellsInOrder.length - 1) {
+          for (let j = 0; j < shortestPathInOrder.length; ++j) {
+            setTimeout(() => {
+              const x = shortestPathInOrder[j].x;
+              const y = shortestPathInOrder[j].y;
+              setGrid((grid) => {
+                grid[y][x].isShortestPath = true;
+                return [...grid];
+              });
+            }, j * getAnimationDelay[state.settings.animationSpeed]);
+          }
+        }
+      }, i * getAnimationDelay[state.settings.animationSpeed]);
+    }
+  };
 
   // Initialize grid and settings
   const visualizerRef = useRef(null);
