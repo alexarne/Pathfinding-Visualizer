@@ -80,6 +80,7 @@ function BFS(grid, from, to) {
   while (queue.length > 0) {
     const node = queue.shift();
     if (!valid(node.pos, grid)) continue;
+    if (grid[node.pos.y][node.pos.x].isWall) continue;
     if (parent[node.pos.y][node.pos.x] !== -1) continue;
     visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
     parent[node.pos.y][node.pos.x] = {

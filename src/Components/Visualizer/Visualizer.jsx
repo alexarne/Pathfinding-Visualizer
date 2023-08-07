@@ -9,39 +9,6 @@ function Visualizer() {
   console.log("render visualizer");
   const state = useParams();
 
-  state.visualizer.playAlgorithm = () => {
-    const [visitedCellsInOrder, shortestPathInOrder] = getVisitedArrays(
-      state.settings.algorithm,
-      state.grid,
-      state.sourcePosition,
-      state.targetPosition
-    );
-    // Mark visited cells
-    for (let i = 0; i < visitedCellsInOrder.length; ++i) {
-      setTimeout(() => {
-        const x = visitedCellsInOrder[i].x;
-        const y = visitedCellsInOrder[i].y;
-        setGrid((grid) => {
-          grid[y][x].isVisited = true;
-          return [...grid];
-        });
-        // If last visited cell, start marking path cells
-        if (i == visitedCellsInOrder.length - 1) {
-          for (let j = 0; j < shortestPathInOrder.length; ++j) {
-            setTimeout(() => {
-              const x = shortestPathInOrder[j].x;
-              const y = shortestPathInOrder[j].y;
-              setGrid((grid) => {
-                grid[y][x].isShortestPath = true;
-                return [...grid];
-              });
-            }, j * getAnimationDelay[state.settings.animationSpeed]);
-          }
-        }
-      }, i * getAnimationDelay[state.settings.animationSpeed]);
-    }
-  };
-
   // Initialize grid and settings
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
@@ -75,6 +42,39 @@ function Visualizer() {
           return node;
         });
       });
+    });
+  };
+
+  state.visualizer.playAlgorithm = () => {
+    state.visualizer.resetPathfinder();
+    const [visitedCellsInOrder, shortestPathInOrder] = getVisitedArrays(
+      state.settings.algorithm,
+      state.grid,
+      state.sourcePosition,
+      state.targetPosition
+    );
+    async function markCell(cells, index, type, callback) {
+      const delay = getAnimationDelay[state.settings.animationSpeed];
+      if (delay !== 0) {
+        await new Promise((r) => setTimeout(r, delay));
+      }
+      const x = cells[index].x;
+      const y = cells[index].y;
+      setGrid((grid) => {
+        grid[y][x][type] = true;
+        return [...grid];
+      });
+      if (index === cells.length - 1) {
+        callback();
+      } else {
+        // Go next cell
+        markCell(cells, index + 1, type, callback);
+      }
+    }
+    // First mark visiteds
+    markCell(visitedCellsInOrder, 0, "isVisited", () => {
+      // When done, mark path
+      markCell(shortestPathInOrder, 0, "isShortestPath", () => {});
     });
   };
 
