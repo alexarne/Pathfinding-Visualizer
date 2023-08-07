@@ -68,7 +68,6 @@ function AStar(grid, from, to) {
 
 function BFS(grid, from, to) {
   const visitedCellsInOrder = [];
-  const shortestPathInOrder = [];
 
   const parent = Array(grid.length)
     .fill(0)
@@ -79,9 +78,9 @@ function BFS(grid, from, to) {
   const queue = [{ pos: from, parentPos: { x: -1, y: -1 } }];
   while (queue.length > 0) {
     const node = queue.shift();
-    if (!valid(node.pos, grid)) continue;
-    if (grid[node.pos.y][node.pos.x].isWall) continue;
+    if (!valid(node, grid)) continue;
     if (parent[node.pos.y][node.pos.x] !== -1) continue;
+
     visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
     parent[node.pos.y][node.pos.x] = {
       x: node.parentPos.x,
@@ -89,48 +88,86 @@ function BFS(grid, from, to) {
     };
     if (node.pos.x == to.x && node.pos.y == to.y) break;
 
-    queue.push({
-      pos: { x: node.pos.x + 1, y: node.pos.y },
-      parentPos: { x: node.pos.x, y: node.pos.y },
-    });
-    queue.push({
-      pos: { x: node.pos.x, y: node.pos.y + 1 },
-      parentPos: { x: node.pos.x, y: node.pos.y },
-    });
-    queue.push({
-      pos: { x: node.pos.x - 1, y: node.pos.y },
-      parentPos: { x: node.pos.x, y: node.pos.y },
-    });
-    queue.push({
-      pos: { x: node.pos.x, y: node.pos.y - 1 },
-      parentPos: { x: node.pos.x, y: node.pos.y },
-    });
+    pushNeighbours(queue, node);
   }
 
-  if (parent[to.y][to.x] !== -1) {
-    shortestPathInOrder.push(to);
-    let current = parent[to.y][to.x];
-    while (current.x !== -1 && current.y !== -1) {
-      shortestPathInOrder.unshift(current);
-      current = parent[current.y][current.x];
-    }
-  }
+  const shortestPathInOrder = constructPath(to, parent);
 
   return [visitedCellsInOrder, shortestPathInOrder];
 }
 
 function DFS(grid, from, to) {
   const visitedCellsInOrder = [];
-  const shortestPathInOrder = [];
-  return ["dfs", shortestPathInOrder];
+
+  const parent = Array(grid.length)
+    .fill(0)
+    .map((row, y) => {
+      return Array(grid[0].length).fill(-1);
+    });
+
+  const stack = [{ pos: from, parentPos: { x: -1, y: -1 } }];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (!valid(node, grid)) continue;
+    if (parent[node.pos.y][node.pos.x] !== -1) continue;
+
+    visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
+    parent[node.pos.y][node.pos.x] = {
+      x: node.parentPos.x,
+      y: node.parentPos.y,
+    };
+    if (node.pos.x == to.x && node.pos.y == to.y) break;
+
+    pushNeighbours(stack, node);
+  }
+
+  const shortestPathInOrder = constructPath(to, parent);
+
+  return [visitedCellsInOrder, shortestPathInOrder];
 }
 
 /**
  * General helper functions
  */
 
-function valid(pos, grid) {
+function valid(node, grid) {
   return (
-    pos.y >= 0 && pos.y < grid.length && pos.x >= 0 && pos.x < grid[0].length
+    node.pos.y >= 0 &&
+    node.pos.y < grid.length &&
+    node.pos.x >= 0 &&
+    node.pos.x < grid[0].length &&
+    grid[node.pos.y][node.pos.x].isWall === false
   );
+}
+
+function pushNeighbours(struct, node) {
+  struct.push({
+    pos: { x: node.pos.x + 1, y: node.pos.y },
+    parentPos: { x: node.pos.x, y: node.pos.y },
+  });
+  struct.push({
+    pos: { x: node.pos.x, y: node.pos.y + 1 },
+    parentPos: { x: node.pos.x, y: node.pos.y },
+  });
+  struct.push({
+    pos: { x: node.pos.x - 1, y: node.pos.y },
+    parentPos: { x: node.pos.x, y: node.pos.y },
+  });
+  struct.push({
+    pos: { x: node.pos.x, y: node.pos.y - 1 },
+    parentPos: { x: node.pos.x, y: node.pos.y },
+  });
+}
+
+function constructPath(end, parent) {
+  const shortestPathInOrder = [];
+  if (parent[end.y][end.x] !== -1) {
+    shortestPathInOrder.push(end);
+    let current = parent[end.y][end.x];
+    while (current.x !== -1 && current.y !== -1) {
+      shortestPathInOrder.unshift(current);
+      current = parent[current.y][current.x];
+    }
+  }
+  return shortestPathInOrder;
 }
