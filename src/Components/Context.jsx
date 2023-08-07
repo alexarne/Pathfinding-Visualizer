@@ -20,6 +20,8 @@ export function ParamsProvider({ children }) {
       currentlyVisualizingAlgorithm: false,
       currentlyGeneratingMaze: false,
       // playAlgorithm, // Declared in Visualizer.jsx
+      // resetPathfinder,
+      // clearWalls,
     },
     sourcePosition: {
       x: 0,
@@ -45,6 +47,7 @@ export function ParamsProvider({ children }) {
       // setAnimationSpeed,
     },
     // grid, // Declared in Visualizer.jsx
+    // setGrid,
     // reloadGrid,
   };
 

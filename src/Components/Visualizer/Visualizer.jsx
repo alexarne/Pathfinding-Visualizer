@@ -46,12 +46,37 @@ function Visualizer() {
   const visualizerRef = useRef(null);
   const [grid, setGrid] = useState([[]]);
   state.grid = grid;
+  state.setGrid = setGrid;
   useEffect(() => {
     setGrid(createGrid());
     state.reloadGrid = () => {
       setGrid((prev) => prev.slice());
     };
   }, []);
+
+  state.visualizer.resetPathfinder = () => {
+    state.setGrid((grid) => {
+      return grid.map((row) => {
+        return row.map((node) => {
+          node.isVisited = false;
+          node.isShortestPath = false;
+          return node;
+        });
+      });
+    });
+  };
+
+  state.visualizer.clearWalls = () => {
+    state.setGrid((grid) => {
+      return grid.map((row) => {
+        return row.map((node) => {
+          node.weight = 1;
+          node.isWall = false;
+          return node;
+        });
+      });
+    });
+  };
 
   // Mouse actions for cells
   const mouseEnter = (x, y) => {

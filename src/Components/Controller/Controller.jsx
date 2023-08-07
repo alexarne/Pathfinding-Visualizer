@@ -125,7 +125,8 @@ function Controller() {
               closeOnClick={true}
               leftIcon={"trashcan"}
               onClick={() => {
-                // Action
+                state.visualizer.resetPathfinder();
+                state.visualizer.clearWalls();
               }}
             >
               Clear Board
