@@ -27,6 +27,7 @@ function Visualizer() {
         return row.map((node) => {
           node.isVisited = false;
           node.isShortestPath = false;
+          node.isNotFound = false;
           return node;
         });
       });
@@ -54,16 +55,19 @@ function Visualizer() {
       state.targetPosition
     );
     async function markCell(cells, index, type, callback) {
-      const delay = getAnimationDelay[state.settings.animationSpeed];
-      if (delay !== 0) {
-        await new Promise((r) => setTimeout(r, delay));
-      }
       const x = cells[index].x;
       const y = cells[index].y;
       setGrid((grid) => {
         grid[y][x][type] = true;
         return [...grid];
       });
+
+      // Wait before next action
+      const delay = getAnimationDelay[state.settings.animationSpeed];
+      if (delay !== 0) {
+        await new Promise((r) => setTimeout(r, delay));
+      }
+
       if (index === cells.length - 1) {
         callback();
       } else {
@@ -73,8 +77,17 @@ function Visualizer() {
     }
     // First mark visiteds
     markCell(visitedCellsInOrder, 0, "isVisited", () => {
-      // When done, mark path
-      markCell(shortestPathInOrder, 0, "isShortestPath", () => {});
+      // When done, mark path if exists, otherwise mark all red
+      if (shortestPathInOrder.length > 0) {
+        markCell(shortestPathInOrder, 0, "isShortestPath", () => {});
+      } else {
+        setGrid((grid) => {
+          for (const pos of visitedCellsInOrder) {
+            grid[pos.y][pos.x].isNotFound = true;
+          }
+          return [...grid];
+        });
+      }
     });
   };
 
@@ -153,6 +166,7 @@ function Visualizer() {
               isWall: false,
               isVisited: false,
               isShortestPath: false,
+              isNotFound: false,
               isSource: false,
               isTarget: false,
               weight: 1,
@@ -218,6 +232,7 @@ function Visualizer() {
                     isWall={cell.isWall}
                     isVisited={cell.isVisited}
                     isShortestPath={cell.isShortestPath}
+                    isNotFound={cell.isNotFound}
                     isSource={cell.isSource}
                     isTarget={cell.isTarget}
                     weight={cell.weight}

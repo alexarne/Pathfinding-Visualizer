@@ -9,6 +9,7 @@ function Cell({
   isWall,
   isVisited,
   isShortestPath,
+  isNotFound,
   isSource,
   isTarget,
   weight,
@@ -37,8 +38,12 @@ function Cell({
 
   let visitedClass = "cell cell-overlay";
   if (showBorders) visitedClass += " border";
-  if (isVisited) visitedClass += " visited";
-  if (isShortestPath) visitedClass += " shortest";
+  if (isNotFound) {
+    visitedClass += " not-found";
+  } else {
+    if (isVisited) visitedClass += " visited";
+    if (isShortestPath) visitedClass += " shortest";
+  }
 
   return (
     <div

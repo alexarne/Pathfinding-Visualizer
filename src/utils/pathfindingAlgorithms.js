@@ -6,15 +6,16 @@
 export const algorithmMappings = {
   "Dijkstra's Algorithm": Dijkstra,
   "A* Search": AStar,
-  "Breadth First Search": BFS,
-  "Depth First Search": DFS,
+  "Greedy Best-First Search": GBFS,
+  "Breadth-First Search": BFS,
+  "Depth-First Search": DFS,
 };
 
 export const getAbbreviation = {
   "Dijkstra's Algorithm": "Dijkstra",
   "A* Search": "A*",
-  "Breadth First Search": "BFS",
-  "Depth First Search": "DFS",
+  "Breadth-First Search": "BFS",
+  "Depth-First Search": "DFS",
 };
 
 export const pathfindingAlgorithms = Object.keys(algorithmMappings);
@@ -66,9 +67,14 @@ function AStar(grid, from, to) {
   return ["astar", shortestPathInOrder];
 }
 
+function GBFS(grid, from, to) {
+  const visitedCellsInOrder = [];
+  const shortestPathInOrder = [];
+  return ["gbfs", shortestPathInOrder];
+}
+
 function BFS(grid, from, to) {
   const visitedCellsInOrder = [];
-
   const parent = Array(grid.length)
     .fill(0)
     .map((row, y) => {
@@ -87,18 +93,15 @@ function BFS(grid, from, to) {
       y: node.parentPos.y,
     };
     if (node.pos.x == to.x && node.pos.y == to.y) break;
-
     pushNeighbours(queue, node);
   }
 
   const shortestPathInOrder = constructPath(to, parent);
-
   return [visitedCellsInOrder, shortestPathInOrder];
 }
 
 function DFS(grid, from, to) {
   const visitedCellsInOrder = [];
-
   const parent = Array(grid.length)
     .fill(0)
     .map((row, y) => {
@@ -117,12 +120,10 @@ function DFS(grid, from, to) {
       y: node.parentPos.y,
     };
     if (node.pos.x == to.x && node.pos.y == to.y) break;
-
     pushNeighbours(stack, node);
   }
 
   const shortestPathInOrder = constructPath(to, parent);
-
   return [visitedCellsInOrder, shortestPathInOrder];
 }
 
