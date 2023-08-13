@@ -15,18 +15,11 @@ function Visualizer() {
   state.grid = grid;
   state.setGrid = setGrid;
   useEffect(() => {
+    setGrid(createGrid());
     state.reloadGrid = () => {
       setGrid((prev) => prev.slice());
     };
   }, []);
-
-  // Create grid when everything is loaded
-  // Circumvent problem with keyboard changing
-  // the viewport size on mobile
-  addEventListener("load", function () {
-    setGrid(createGrid());
-    console.log("grid loaded");
-  });
 
   state.visualizer.resetPathfinder = () => {
     state.setGrid((grid) => {
