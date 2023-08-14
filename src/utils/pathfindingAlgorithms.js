@@ -86,7 +86,9 @@ function AStar(grid, from, to) {
 
     const neighbours = getNeighbours(node);
     for (const neighbour of neighbours) {
-      const newDistance = node.currentDistance + 1;
+      const x = neighbour.pos.x;
+      const y = neighbour.pos.y;
+      const newDistance = node.currentDistance + grid[y][x].weight;
       pq.enqueue({
         ...neighbour,
         currentDistance: newDistance,
