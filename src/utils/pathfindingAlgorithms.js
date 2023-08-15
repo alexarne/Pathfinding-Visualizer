@@ -24,26 +24,6 @@ export const getAbbreviation = {
 export const pathfindingAlgorithms = Object.keys(algorithmMappings);
 
 /**
- * Node objects in grid:
- */
-// {
-//     position: {
-//       x: x,
-//       y: y,
-//     },
-//     mouse: {
-//       down: () => mouseDown(x, y),
-//       enter: () => mouseEnterCallback(x, y),
-//     },
-//     isWall: false,
-//     isVisited: false,
-//     isShortestPath: false,
-//     isSource: false,
-//     isTarget: false,
-//     weight: 1,
-// }
-
-/**
  * Interface: Call to getVisitedArrays gets the proper traversal of
  * running the given algorithm on the given grid with designated
  * start and end nodes.
@@ -60,8 +40,35 @@ export function getVisitedArrays(algo, grid, from, to) {
 
 function Dijkstra(grid, from, to) {
   const visitedCellsInOrder = [];
-  const shortestPathInOrder = [];
-  return ["dijkstra", shortestPathInOrder];
+  const parent = getParentGrid(grid);
+  const pq = getPriorityQueue();
+
+  pq.enqueue({
+    pos: from,
+    parentPos: { x: -1, y: -1 },
+    heuristicValue: 0,
+  });
+  while (!pq.isEmpty()) {
+    const node = pq.dequeue();
+    if (!valid(node, grid)) continue;
+    if (visited(node, parent)) continue;
+    visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
+    setParentNode(parent, node);
+    if (node.pos.x == to.x && node.pos.y == to.y) break;
+
+    const neighbours = getNeighbours(node, grid);
+    for (const neighbour of neighbours) {
+      const x = neighbour.pos.x;
+      const y = neighbour.pos.y;
+      pq.enqueue({
+        ...neighbour,
+        heuristicValue: node.heuristicValue + grid[y][x].weight,
+      });
+    }
+  }
+
+  const shortestPathInOrder = constructPath(to, parent);
+  return [visitedCellsInOrder, shortestPathInOrder];
 }
 
 function AStar(grid, from, to) {
@@ -77,14 +84,13 @@ function AStar(grid, from, to) {
   });
   while (!pq.isEmpty()) {
     const node = pq.dequeue();
-    console.log(node.pos);
     if (!valid(node, grid)) continue;
     if (visited(node, parent)) continue;
     visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
     setParentNode(parent, node);
     if (node.pos.x == to.x && node.pos.y == to.y) break;
 
-    const neighbours = getNeighbours(node);
+    const neighbours = getNeighbours(node, grid);
     for (const neighbour of neighbours) {
       const x = neighbour.pos.x;
       const y = neighbour.pos.y;
@@ -113,14 +119,13 @@ function GBFS(grid, from, to) {
   });
   while (!pq.isEmpty()) {
     const node = pq.dequeue();
-    console.log(node.pos);
     if (!valid(node, grid)) continue;
     if (visited(node, parent)) continue;
     visitedCellsInOrder.push({ x: node.pos.x, y: node.pos.y });
     setParentNode(parent, node);
     if (node.pos.x == to.x && node.pos.y == to.y) break;
 
-    const neighbours = getNeighbours(node);
+    const neighbours = getNeighbours(node, grid);
     for (const neighbour of neighbours) {
       pq.enqueue({
         ...neighbour,
@@ -146,7 +151,7 @@ function BFS(grid, from, to) {
     setParentNode(parent, node);
     if (node.pos.x == to.x && node.pos.y == to.y) break;
 
-    const neighbours = getNeighbours(node);
+    const neighbours = getNeighbours(node, grid);
     for (const neighbour of neighbours) {
       queue.push(neighbour);
     }
@@ -169,7 +174,7 @@ function DFS(grid, from, to) {
     setParentNode(parent, node);
     if (node.pos.x == to.x && node.pos.y == to.y) break;
 
-    const neighbours = getNeighbours(node);
+    const neighbours = getNeighbours(node, grid);
     for (const neighbour of neighbours) {
       stack.push(neighbour);
     }
@@ -225,8 +230,8 @@ function setParentNode(parent, node) {
   };
 }
 
-function getNeighbours(node) {
-  return [
+function getNeighbours(node, grid) {
+  const neighbours = [
     {
       pos: { x: node.pos.x + 1, y: node.pos.y },
       parentPos: { x: node.pos.x, y: node.pos.y },
@@ -244,6 +249,7 @@ function getNeighbours(node) {
       parentPos: { x: node.pos.x, y: node.pos.y },
     },
   ];
+  return neighbours.filter((n) => valid(n, grid));
 }
 
 function constructPath(end, parent) {
