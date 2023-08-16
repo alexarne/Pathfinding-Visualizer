@@ -1,6 +1,6 @@
 # Pathfinding-Visualizer
 
-a visualization tool for different pathfinding algorithms. Walls are impassable and the weight of a cell specifies the cost of getting to that cell. The purpose of this project was to gain practical experience with React whilst also providing a user friendly experience for mobile users.
+A visualization tool for different pathfinding algorithms. Walls are impassable and the weight of a cell specifies the cost of getting to that cell. The purpose of this project was to gain practical experience with React whilst also providing a user friendly experience for mobile users.
 
 ## Demonstration
 
