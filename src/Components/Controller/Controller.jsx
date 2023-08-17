@@ -170,7 +170,33 @@ function Controller() {
                 closeOnClick={true}
                 goToMenu={"settings-front"}
                 onClick={() => {
-                  console.log(getMazeArray(algo, state.grid));
+                  state.visualizer.clearWalls();
+                  state.visualizer.resetPathfinder();
+                  const mazeCellsInOrder = getMazeArray(algo, state.grid);
+                  async function animate(index) {
+                    if (index >= mazeCellsInOrder.length) return;
+                    const x = mazeCellsInOrder[index].x;
+                    const y = mazeCellsInOrder[index].y;
+                    if (
+                      !state.grid[y][x].isTarget &&
+                      !state.grid[y][x].isSource
+                    ) {
+                      state.setGrid((grid) => {
+                        grid[y][x].isWall = true;
+                        return [...grid];
+                      });
+
+                      // Wait before next action
+                      const delay =
+                        getAnimationDelay[state.settings.animationSpeed];
+                      if (delay !== 0 && algo !== "Random Maze") {
+                        await new Promise((r) => setTimeout(r, delay));
+                      }
+                    }
+
+                    animate(index + 1);
+                  }
+                  animate(0);
                 }}
               >
                 {algo}

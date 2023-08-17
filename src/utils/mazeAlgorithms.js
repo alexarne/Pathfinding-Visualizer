@@ -29,7 +29,16 @@ function RecursiveDiv(height, width) {
 }
 
 function RandomMaze(height, width) {
-  return "random maze";
+  const PROBABILITY = 0.3;
+  const mazeCellsInOrder = [];
+  for (let h = 0; h < height; ++h) {
+    for (let w = 0; w < width; ++w) {
+      if (Math.random() < PROBABILITY) {
+        mazeCellsInOrder.push({ x: w, y: h });
+      }
+    }
+  }
+  return mazeCellsInOrder;
 }
 
 function AdaptedDFS(height, width) {

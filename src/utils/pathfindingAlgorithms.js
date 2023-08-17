@@ -42,11 +42,13 @@ function Dijkstra(grid, from, to) {
   const visitedCellsInOrder = [];
   const parent = getParentGrid(grid);
   const pq = getPriorityQueue();
+  let counter = 0;
 
   pq.enqueue({
     pos: from,
     parentPos: { x: -1, y: -1 },
     heuristicValue: 0,
+    id: counter,
   });
   while (!pq.isEmpty()) {
     const node = pq.dequeue();
@@ -62,6 +64,7 @@ function Dijkstra(grid, from, to) {
       const y = neighbour.pos.y;
       pq.enqueue({
         ...neighbour,
+        id: ++counter,
         heuristicValue: node.heuristicValue + grid[y][x].weight,
       });
     }
@@ -75,12 +78,14 @@ function AStar(grid, from, to) {
   const visitedCellsInOrder = [];
   const parent = getParentGrid(grid);
   const pq = getPriorityQueue();
+  let counter = 0;
 
   pq.enqueue({
     pos: from,
     parentPos: { x: -1, y: -1 },
     currentDistance: 0,
     heuristicValue: -1,
+    id: counter,
   });
   while (!pq.isEmpty()) {
     const node = pq.dequeue();
@@ -97,6 +102,7 @@ function AStar(grid, from, to) {
       const newDistance = node.currentDistance + grid[y][x].weight;
       pq.enqueue({
         ...neighbour,
+        id: ++counter,
         currentDistance: newDistance,
         heuristicValue: newDistance + manhattanDistance(neighbour.pos, to),
       });
@@ -111,11 +117,13 @@ function GBFS(grid, from, to) {
   const visitedCellsInOrder = [];
   const parent = getParentGrid(grid);
   const pq = getPriorityQueue();
+  let counter = 0;
 
   pq.enqueue({
     pos: from,
     parentPos: { x: -1, y: -1 },
     heuristicValue: -1,
+    id: counter,
   });
   while (!pq.isEmpty()) {
     const node = pq.dequeue();
@@ -129,6 +137,7 @@ function GBFS(grid, from, to) {
     for (const neighbour of neighbours) {
       pq.enqueue({
         ...neighbour,
+        id: ++counter,
         heuristicValue: manhattanDistance(neighbour.pos, to),
       });
     }
@@ -191,7 +200,10 @@ function DFS(grid, from, to) {
 function getPriorityQueue() {
   // Sorted in increasing order
   const comparator = (a, b) => {
-    if (a.heuristicValue === b.heuristicValue) return 0;
+    if (a.heuristicValue === b.heuristicValue) {
+      // Hack to make sort stable (keep previous ordering)
+      return a.id > b.id ? 1 : -1;
+    }
     return a.heuristicValue > b.heuristicValue ? 1 : -1;
   };
   return new PriorityQueue(comparator);
