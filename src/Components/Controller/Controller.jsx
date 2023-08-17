@@ -170,7 +170,7 @@ function Controller() {
                 closeOnClick={true}
                 goToMenu={"settings-front"}
                 onClick={() => {
-                  // click action
+                  console.log(getMazeArray(algo, state.grid));
                 }}
               >
                 {algo}
