@@ -173,6 +173,25 @@ function Controller() {
                   state.visualizer.clearWalls();
                   state.visualizer.resetPathfinder();
                   const mazeCellsInOrder = getMazeArray(algo, state.grid);
+                  const delay =
+                    getAnimationDelay[state.settings.animationSpeed];
+                  if (delay === 0 || algo === "Random Maze") {
+                    state.setGrid((grid) => {
+                      for (let i = 0; i < mazeCellsInOrder.length; ++i) {
+                        const x = mazeCellsInOrder[i].x;
+                        const y = mazeCellsInOrder[i].y;
+                        if (
+                          !state.grid[y][x].isTarget &&
+                          !state.grid[y][x].isSource
+                        ) {
+                          grid[y][x].isWall = true;
+                        }
+                      }
+                      return grid;
+                    });
+                    return;
+                  }
+
                   async function animate(index) {
                     if (index >= mazeCellsInOrder.length) return;
                     const x = mazeCellsInOrder[index].x;
@@ -187,9 +206,7 @@ function Controller() {
                       });
 
                       // Wait before next action
-                      const delay =
-                        getAnimationDelay[state.settings.animationSpeed];
-                      if (delay !== 0 && algo !== "Random Maze") {
+                      if (delay !== 0) {
                         await new Promise((r) => setTimeout(r, delay));
                       }
                     }
