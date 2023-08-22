@@ -8,6 +8,16 @@ https://alexarne.github.io/Pathfinding-Visualizer/
 
 ## Algorithms
 
+* [Dijkstra's Algorithm]()
+
+* [A* Search]()
+
+* [Greedy Best-First Search]()
+
+* [Breadth-First Search]()
+
+* [Depth-First Search]()
+
 ## Expandability
 
 The available algorithms and cell types are easily expanded by modifying the corresponding files in [utils](./src/utils/).
